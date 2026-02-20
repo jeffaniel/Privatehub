@@ -1,0 +1,255 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* LincolnVoice brand colors - Exact Lincoln Jesuit College official colors */
+/* Primary: Dark Navy/Indigo #1e1e5a from header, Accent: Steel Blue #4a8caa from banner overlay */
+:root {
+  /* Updated color scheme - Red primary, Black footer, White background */
+  --background: oklch(0.98 0.005 250);
+  --foreground: oklch(0.15 0.04 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.04 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.04 250);
+  /* Primary: Red */
+  --primary: oklch(0.55 0.22 27);
+  --primary-foreground: oklch(0.98 0.005 250);
+  --secondary: oklch(0.96 0.01 250);
+  --secondary-foreground: oklch(0.22 0.12 265);
+  --muted: oklch(0.95 0.01 250);
+  --muted-foreground: oklch(0.45 0.03 250);
+  /* Accent: Red */
+  --accent: oklch(0.55 0.22 27);
+  --accent-foreground: oklch(0.98 0.005 250);
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.98 0.005 250);
+  --border: oklch(0.9 0.01 250);
+  --input: oklch(0.9 0.01 250);
+  --ring: oklch(0.55 0.22 27);
+  --chart-1: oklch(0.55 0.22 27);
+  --chart-2: oklch(0.28 0.12 265);
+  --chart-3: oklch(0.7 0.18 150);
+  --chart-4: oklch(0.65 0.2 45);
+  --chart-5: oklch(0.6 0.22 0);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.98 0.005 250);
+  --sidebar-foreground: oklch(0.15 0.04 250);
+  --sidebar-primary: oklch(0.22 0.12 265);
+  --sidebar-primary-foreground: oklch(0.98 0.005 250);
+  --sidebar-accent: oklch(0.95 0.01 250);
+  --sidebar-accent-foreground: oklch(0.22 0.12 265);
+  --sidebar-border: oklch(0.9 0.01 250);
+  --sidebar-ring: oklch(0.55 0.22 27);
+  /* Footer background - Black */
+  --footer-bg: oklch(0.1 0.01 0);
+  /* Custom tokens - Updated colors */
+  --loyola-navy: oklch(0.55 0.22 27);
+  --loyola-blue: oklch(0.55 0.22 27);
+  --loyola-gold: oklch(0.75 0.15 85);
+  --success: oklch(0.7 0.18 150);
+  --success-foreground: oklch(0.98 0.005 250);
+  --warning: oklch(0.75 0.18 85);
+  --warning-foreground: oklch(0.15 0.04 250);
+}
+
+.dark {
+  /* Dark mode with red primary */
+  --background: oklch(0.14 0.05 265);
+  --foreground: oklch(0.95 0.01 250);
+  --card: oklch(0.18 0.05 265);
+  --card-foreground: oklch(0.95 0.01 250);
+  --popover: oklch(0.18 0.05 265);
+  --popover-foreground: oklch(0.95 0.01 250);
+  --primary: oklch(0.65 0.22 27);
+  --primary-foreground: oklch(0.95 0.01 250);
+  --secondary: oklch(0.24 0.05 265);
+  --secondary-foreground: oklch(0.95 0.01 250);
+  --muted: oklch(0.24 0.05 265);
+  --muted-foreground: oklch(0.65 0.02 250);
+  --accent: oklch(0.65 0.22 27);
+  --accent-foreground: oklch(0.95 0.01 250);
+  --destructive: oklch(0.45 0.18 27);
+  --destructive-foreground: oklch(0.95 0.01 250);
+  --border: oklch(0.3 0.05 265);
+  --input: oklch(0.3 0.05 265);
+  --ring: oklch(0.65 0.22 27);
+  --chart-1: oklch(0.65 0.22 27);
+  --chart-2: oklch(0.4 0.12 265);
+  --chart-3: oklch(0.7 0.18 150);
+  --chart-4: oklch(0.7 0.2 45);
+  --chart-5: oklch(0.65 0.22 0);
+  --sidebar: oklch(0.18 0.05 265);
+  --sidebar-foreground: oklch(0.95 0.01 250);
+  --sidebar-primary: oklch(0.65 0.22 27);
+  --sidebar-primary-foreground: oklch(0.95 0.01 250);
+  --sidebar-accent: oklch(0.24 0.05 265);
+  --sidebar-accent-foreground: oklch(0.95 0.01 250);
+  --sidebar-border: oklch(0.3 0.05 265);
+  --sidebar-ring: oklch(0.65 0.22 27);
+  --loyola-navy: oklch(0.65 0.22 27);
+  --loyola-blue: oklch(0.65 0.22 27);
+  --loyola-gold: oklch(0.75 0.15 85);
+  --success: oklch(0.7 0.18 150);
+  --success-foreground: oklch(0.14 0.05 265);
+  --warning: oklch(0.75 0.18 85);
+  --warning-foreground: oklch(0.14 0.05 265);
+}
+
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback";
+  --font-heading: "Poppins", "Poppins Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  /* Updated school color tokens */
+  --color-loyola-navy: var(--loyola-navy);
+  --color-loyola-blue: var(--loyola-blue);
+  --color-loyola-gold: var(--loyola-gold);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Skip to content link for accessibility */
+  .skip-to-content {
+    @apply absolute -top-full left-0 z-[100] bg-accent text-accent-foreground px-4 py-2 rounded-md;
+    @apply focus:top-4 focus:left-4 transition-all;
+  }
+  
+  /* Improved focus indicators */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+  
+  /* Minimum touch target sizes for mobile */
+  button, a {
+    @apply min-h-[44px];
+  }
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  @apply bg-card/70 backdrop-blur-xl border border-border/50;
+}
+
+.glass-strong {
+  @apply bg-card/90 backdrop-blur-2xl border border-border/60;
+}
+
+/* Updated animated gradient to use exact school navy color */
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    -45deg,
+    oklch(0.22 0.12 265),
+    oklch(0.18 0.1 265),
+    oklch(0.26 0.1 270),
+    oklch(0.22 0.12 265)
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Shimmer animation for progress */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+
+/* Neumorphic input styles */
+.neu-input {
+  box-shadow: inset 2px 2px 5px oklch(0 0 0 / 0.05), inset -2px -2px 5px oklch(1 0 0 / 0.8);
+  transition: box-shadow 0.2s ease;
+}
+
+.neu-input:focus {
+  box-shadow: inset 3px 3px 7px oklch(0 0 0 / 0.08), inset -3px -3px 7px oklch(1 0 0 / 0.9);
+}
+
+/* Updated Lincoln-specific gradient classes with school navy and blue */
+.loyola-gradient {
+  background: linear-gradient(135deg, oklch(0.55 0.22 27) 0%, oklch(0.6 0.22 27) 50%, oklch(0.55 0.22 27) 100%);
+}
+
+.loyola-gradient-horizontal {
+  background: linear-gradient(90deg, oklch(0.55 0.22 27) 0%, oklch(0.55 0.22 27) 100%);
+}
+
+/* New banner overlay style matching the school website */
+.loyola-banner {
+  background-color: oklch(0.55 0.22 27 / 0.85);
+}
