@@ -48,6 +48,7 @@ interface StatsData {
 import { getCurrentStaff } from "@/lib/auth"
 
 export function OrganizationSettings() {
+  console.log("🏗️ [OrganizationSettings] Mounting...")
   const [error, setError] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
   const router = useRouter()
@@ -80,17 +81,14 @@ export function OrganizationSettings() {
   const submissionUrl = typeof window !== "undefined" ? `${window.location.origin}/submit` : ""
 
   useEffect(() => {
-    const init = async () => {
-      const staff = await getCurrentStaff()
-      if (!staff) {
-        router.push("/staff-access-portal/login")
-        return
-      }
-      fetchStats()
-      fetchSettings()
+    console.log("🏁 [OrganizationSettings] Initializing data fetch...")
+    fetchStats()
+    fetchSettings()
+
+    return () => {
+      console.log("🧹 [OrganizationSettings] Unmounting...")
     }
-    init()
-  }, [router])
+  }, [])
 
   const fetchSettings = async () => {
     try {
@@ -219,7 +217,7 @@ export function OrganizationSettings() {
             </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/staff-access-portal/dashboard">
+            <Link href="/staff-portal/dashboard">
               <Button variant="ghost" size="sm" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Dashboard

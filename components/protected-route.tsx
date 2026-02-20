@@ -18,11 +18,13 @@ export function ProtectedRoute({ children, requiredRole = 'admin' }: ProtectedRo
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
   const [userRole, setUserRole] = useState<string | null>(null)
   const [showRetry, setShowRetry] = useState(false)
+  const [authStatus, setAuthStatus] = useState<"starting" | "verifying" | "handshaking" | "done">("starting")
 
   useEffect(() => {
     // Avoid re-checking if already authenticated or if check is in progress
     if (isAuthenticated !== null || hasCheckedRef.current) return
     hasCheckedRef.current = true
+    setAuthStatus("verifying")
 
     let isMounted = true
 
@@ -71,6 +73,7 @@ export function ProtectedRoute({ children, requiredRole = 'admin' }: ProtectedRo
 
         console.log('✅ [ProtectedRoute] Auth verified successfully')
         setUserRole(staff.role)
+        setAuthStatus("handshaking")
         setIsAuthenticated(true)
         clearTimeout(timeoutId)
         clearTimeout(retryTimeoutId)
@@ -86,7 +89,7 @@ export function ProtectedRoute({ children, requiredRole = 'admin' }: ProtectedRo
       clearTimeout(timeoutId)
       clearTimeout(retryTimeoutId)
     }
-  }, [router, requiredRole, isAuthenticated])
+  }, [router, requiredRole])
 
   if (isAuthenticated === null) {
     return (
@@ -94,6 +97,9 @@ export function ProtectedRoute({ children, requiredRole = 'admin' }: ProtectedRo
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
         <div className="text-center">
           <p className="text-muted-foreground font-medium">Initializing secure connection...</p>
+          <p className="text-[10px] text-muted-foreground/50 mt-1 uppercase tracking-widest font-mono">
+            Status: {authStatus}
+          </p>
           {showRetry && (
             <motion.div
               initial={{ opacity: 0 }}

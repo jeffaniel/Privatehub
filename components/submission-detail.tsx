@@ -131,7 +131,7 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
           <Card className="max-w-md">
             <CardContent className="pt-6 text-center">
               <p className="text-muted-foreground mb-4">Submission not found</p>
-              <Link href="/staff-access-portal/dashboard">
+              <Link href="/staff-portal/dashboard">
                 <Button>Back to Dashboard</Button>
               </Link>
             </CardContent>
@@ -207,7 +207,7 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
               Admin
             </Badge>
           </div>
-          <Link href="/staff-access-portal/dashboard">
+          <Link href="/staff-portal/dashboard">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard

@@ -56,16 +56,6 @@ interface Submission {
   created_at: string
 }
 
-// Chart data
-const WEEKLY_DATA = [
-  { day: "Mon", submissions: 12, responses: 8 },
-  { day: "Tue", submissions: 19, responses: 14 },
-  { day: "Wed", submissions: 15, responses: 12 },
-  { day: "Thu", submissions: 22, responses: 18 },
-  { day: "Fri", submissions: 28, responses: 20 },
-  { day: "Sat", submissions: 8, responses: 6 },
-  { day: "Sun", submissions: 5, responses: 4 },
-]
 
 const CATEGORY_LABELS: Record<string, string> = {
   feedback: "Feedback",
@@ -117,6 +107,7 @@ export function AdminDashboard() {
   const [currentStaff, setCurrentStaff] = useState<any>(null)
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [categoryData, setCategoryData] = useState<any[]>([])
+  const [weeklyActivity, setWeeklyActivity] = useState<any[]>([])
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -196,13 +187,14 @@ export function AdminDashboard() {
     try {
       console.log('🔍 [AdminDashboard] Fetching stats...')
       const { data, error } = await promiseWithTimeout(
-        supabase.from('submissions').select('status') as any,
+        supabase.from('submissions').select('status, created_at') as any,
         10000,
         'Stats fetch'
       ) as any
 
       if (error) throw error
 
+      // 1. Calculate general stats
       const total = data.length
       const responded = data.filter((s: any) => s.status === 'responded').length
       const underReview = data.filter((s: any) => s.status === 'under_review').length
@@ -216,9 +208,35 @@ export function AdminDashboard() {
         closed: closed,
         resolution_rate: total > 0 ? Math.round(((responded + closed) / total) * 100) : 0
       }
-
-      console.log('✅ [AdminDashboard] Stats updated')
       setStats(newStats)
+
+      // 2. Calculate weekly activity data (last 7 days)
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      const last7Days: { dateStr: string; day: string; submissions: number; responses: number }[] = []
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date()
+        date.setDate(date.getDate() - i)
+        last7Days.push({
+          dateStr: date.toISOString().split('T')[0],
+          day: days[date.getDay()],
+          submissions: 0,
+          responses: 0
+        })
+      }
+
+      data.forEach((sub: any) => {
+        const subDate = new Date(sub.created_at).toISOString().split('T')[0]
+        const dayData = last7Days.find(d => d.dateStr === subDate)
+        if (dayData) {
+          dayData.submissions++
+          if (['responded', 'closed', 'under_review'].includes(sub.status)) {
+            dayData.responses++
+          }
+        }
+      })
+
+      setWeeklyActivity(last7Days)
+      console.log('✅ [AdminDashboard] Stats and Weekly Activity updated')
     } catch (error) {
       console.error('❌ [AdminDashboard] Error fetching stats:', error)
     }
@@ -265,7 +283,7 @@ export function AdminDashboard() {
                 <span className="sr-only">Security</span>
               </Button>
             </Link>
-            <Link href="/staff-portal/settings">
+            <Link href="/staff-portal/dashboard/settings">
               <Button variant="ghost" size="icon">
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Settings</span>
@@ -363,7 +381,7 @@ export function AdminDashboard() {
               <CardContent>
                 <div className="h-[250px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={WEEKLY_DATA}>
+                    <AreaChart data={weeklyActivity}>
                       <defs>
                         <linearGradient id="colorSubmissions" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3} />

@@ -100,7 +100,7 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ id:
                         <CardDescription>{error || "Submission not found"}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Button onClick={() => router.push("/staff-access-portal/dashboard")} className="w-full">
+                        <Button onClick={() => router.push("/staff-portal/dashboard")} className="w-full">
                             <ArrowLeft className="h-4 w-4 mr-2" />
                             Back to Dashboard
                         </Button>
@@ -123,7 +123,7 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ id:
                 >
                     <Button
                         variant="ghost"
-                        onClick={() => router.push("/staff-access-portal/dashboard")}
+                        onClick={() => router.push("/staff-portal/dashboard")}
                         className="mb-6"
                     >
                         <ArrowLeft className="h-4 w-4 mr-2" />
