@@ -267,7 +267,9 @@ export function AdminDashboard() {
           <div className="flex items-center gap-2">
             <Shield className="h-6 w-6 text-primary" />
             <span className="font-semibold text-lg">
-              Lincoln<span className="text-accent">Voice</span>
+              <span className="hidden sm:inline">Lincoln Student Union </span>
+              <span className="inline sm:hidden">LSU </span>
+              <span className="text-accent">Voice</span>
             </span>
             <Badge variant="outline" className="ml-2 border-accent/50 text-accent">
               Staff
@@ -494,9 +496,9 @@ export function AdminDashboard() {
                     />
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-[160px]">
+                    <SelectTrigger className="w-full sm:w-[160px]">
                       <Filter className="h-4 w-4 mr-2" />
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
@@ -509,7 +511,7 @@ export function AdminDashboard() {
                     </SelectContent>
                   </Select>
                   <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                    <SelectTrigger className="w-[160px]">
+                    <SelectTrigger className="w-full sm:w-[160px]">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>

@@ -53,7 +53,7 @@ export function OrganizationSettings() {
   const [successMessage, setSuccessMessage] = useState("")
   const router = useRouter()
   const [organization, setOrganization] = useState<OrganizationData>({
-    name: "Lincoln Voice",
+    name: "Lincoln Student Union Voice",
     description: "Anonymous feedback platform for Lincoln College Science Management and Technology Student Union",
     contact_email: "staff@lincolnvoice.edu",
     website: "",
@@ -211,7 +211,10 @@ export function OrganizationSettings() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <Shield className="h-6 w-6 text-primary" />
-            <span className="font-semibold text-lg">LincolnVoice Staff Portal</span>
+            <span className="font-semibold text-lg">
+              <span className="hidden sm:inline">Lincoln Student Union Voice</span>
+              <span className="inline sm:hidden">LSU Voice</span> Staff Portal
+            </span>
             <Badge variant="outline" className="ml-2">
               Staff
             </Badge>
@@ -296,20 +299,20 @@ export function OrganizationSettings() {
         </div>
 
         <Tabs defaultValue="platform" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="platform" className="gap-2">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full h-auto p-1 mb-8">
+            <TabsTrigger value="platform" className="gap-2 py-2">
               <Building2 className="h-4 w-4" />
               Platform
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="gap-2">
+            <TabsTrigger value="notifications" className="gap-2 py-2">
               <Bell className="h-4 w-4" />
               Notifications
             </TabsTrigger>
-            <TabsTrigger value="database" className="gap-2">
+            <TabsTrigger value="database" className="gap-2 py-2">
               <Database className="h-4 w-4" />
               Database
             </TabsTrigger>
-            <TabsTrigger value="share" className="gap-2">
+            <TabsTrigger value="share" className="gap-2 py-2">
               <Settings className="h-4 w-4" />
               Share
             </TabsTrigger>
@@ -321,7 +324,7 @@ export function OrganizationSettings() {
               <CardHeader>
                 <CardTitle>Platform Information</CardTitle>
                 <CardDescription>
-                  Basic information about your LincolnVoice platform
+                  Basic information about your Lincoln Student Union Voice platform
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">

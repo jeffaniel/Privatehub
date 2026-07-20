@@ -169,8 +169,8 @@ export function TrackingForm() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t">
-                <div className="flex gap-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pt-4 border-t">
+                <div className="flex gap-6 justify-between sm:justify-start">
                   <div className="text-center">
                     <p className="text-2xl font-bold text-green-600">{submission.upvotes}</p>
                     <p className="text-xs text-muted-foreground">Upvotes</p>
@@ -189,6 +189,7 @@ export function TrackingForm() {
                   variant="outline"
                   size="sm"
                   onClick={() => router.push(`/submission/${submission.tracking_code}`)}
+                  className="w-full sm:w-auto"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   View Full Submission

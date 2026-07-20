@@ -23,7 +23,9 @@ export default function AdminLoginPage() {
           <Link href="/" className="flex items-center gap-2">
             <Shield className="h-6 w-6 text-primary-foreground" />
             <span className="font-semibold text-lg text-primary-foreground">
-              Lincoln<span className="text-accent">Voice</span>
+              <span className="hidden sm:inline">Lincoln Student Union </span>
+              <span className="inline sm:hidden">LSU </span>
+              <span className="text-accent">Voice</span>
             </span>
           </Link>
         </div>

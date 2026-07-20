@@ -13,7 +13,7 @@ const poppins = Poppins({
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
-  title: "LincolnVoice - Anonymous Feedback Platform",
+  title: "Lincoln Student Union Voice - Anonymous Feedback Platform",
   description: "Your voice matters. Submit feedback, complaints, and suggestions anonymously with AI-powered insights.",
   generator: "v0.app",
   keywords: ["anonymous feedback", "student voice", "complaints", "suggestions", "secure reporting", "Lincoln"],

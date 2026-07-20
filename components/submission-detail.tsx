@@ -201,7 +201,9 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
           <div className="flex items-center gap-2">
             <Shield className="h-6 w-6 text-primary" />
             <span className="font-semibold text-lg">
-              Lincoln<span className="text-accent">Voice</span>
+              <span className="hidden sm:inline">Lincoln Student Union </span>
+              <span className="inline sm:hidden">LSU </span>
+              <span className="text-accent">Voice</span>
             </span>
             <Badge variant="outline" className="ml-2 border-accent/50 text-accent">
               Admin
@@ -210,7 +212,7 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
           <Link href="/staff-portal/dashboard">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
-              Back to Dashboard
+              Back <span className="hidden sm:inline">to Dashboard</span>
             </Button>
           </Link>
         </div>

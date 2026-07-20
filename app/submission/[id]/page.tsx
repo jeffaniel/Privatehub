@@ -234,14 +234,16 @@ export default function SubmissionPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="font-semibold text-lg">
-              Lincoln<span className="text-accent">Voice</span>
+              <span className="hidden sm:inline">Lincoln Student Union </span>
+              <span className="inline sm:hidden">LSU </span>
+              <span className="text-accent">Voice</span>
             </span>
           </Link>
           <div className="flex items-center gap-2">
             <Link href="/track">
               <Button variant="ghost" size="sm" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
-                Back to Tracking
+                Back <span className="hidden sm:inline">to Tracking</span>
               </Button>
             </Link>
             <Badge className={`${getStatusColor(submission.status)} border`}>
@@ -260,12 +262,12 @@ export default function SubmissionPage() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-6 p-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Tracking Code</p>
-                <p className="text-2xl font-mono font-bold">{submission.tracking_code}</p>
+                <p className="text-xl md:text-2xl font-mono font-bold break-all">{submission.tracking_code}</p>
               </div>
-              <div className="text-right">
+              <div className="text-left sm:text-right">
                 <p className="text-sm font-medium text-muted-foreground">Submitted</p>
                 <p className="font-medium">{formatDate(submission.created_at)}</p>
               </div>

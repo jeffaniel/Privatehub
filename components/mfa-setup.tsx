@@ -84,7 +84,7 @@ export function MfaSetup({ adminId, email }: MfaSetupProps) {
     }
 
     const downloadRecoveryCodes = () => {
-        const content = `LincolnVoice Recovery Codes\nUser: ${email}\nDate: ${new Date().toLocaleDateString()}\n\n${recoveryCodes.join("\n")}\n\nKeep these codes in a secure place. They can be used to access your account if you lose your authenticator device.`
+        const content = `Lincoln Student Union Voice Recovery Codes\nUser: ${email}\nDate: ${new Date().toLocaleDateString()}\n\n${recoveryCodes.join("\n")}\n\nKeep these codes in a secure place. They can be used to access your account if you lose your authenticator device.`
         const blob = new Blob([content], { type: "text/plain" })
         const url = URL.createObjectURL(blob)
         const a = document.createElement("a")

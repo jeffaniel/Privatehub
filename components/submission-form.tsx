@@ -206,13 +206,13 @@ export function SubmissionForm() {
               </ul>
             </div>
 
-            <div className="flex gap-3">
-              <Button className="flex-1" onClick={() => (window.location.href = "/track")}>
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <Button className="flex-1 w-full" onClick={() => (window.location.href = "/track")}>
                 Track Submission
               </Button>
               <Button
                 variant="outline"
-                className="flex-1 bg-transparent"
+                className="flex-1 w-full bg-transparent"
                 onClick={() => {
                   setSubmitted(false)
                   setFormData({ category: "", subject: "", message: "" })

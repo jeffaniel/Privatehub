@@ -17,7 +17,7 @@ export function generateMfaSecret(): string {
 /**
  * Generate a QR code URL for the TOTP secret
  */
-export async function generateMfaQrCode(email: string, secret: string, issuer: string = 'LincolnVoice'): Promise<string> {
+export async function generateMfaQrCode(email: string, secret: string, issuer: string = 'Lincoln Student Union Voice'): Promise<string> {
     const otpauth = generateURI({
         issuer,
         label: email,

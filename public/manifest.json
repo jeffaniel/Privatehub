@@ -1,6 +1,6 @@
 {
-  "name": "LincolnVoice",
-  "short_name": "LincolnVoice",
+  "name": "Lincoln Student Union Voice",
+  "short_name": "LSU Voice",
   "description": "Anonymous feedback platform for students and organizations",
   "start_url": "/",
   "display": "standalone",

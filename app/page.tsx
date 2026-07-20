@@ -27,7 +27,7 @@ export default function HomePage() {
     active: 42
   })
   const [orgInfo, setOrgInfo] = useState({
-    name: "Lincoln Voice",
+    name: "Lincoln Student Union Voice",
     description: "Anonymous feedback platform for Lincoln College Science Management and Technology Student Union"
   })
   const [particles, setParticles] = useState<any[]>([])
@@ -131,12 +131,13 @@ export default function HomePage() {
             </motion.div>
             <div className="flex flex-col">
               <motion.span
-                className="font-semibold text-xl tracking-tight text-foreground"
+                className="font-semibold text-lg sm:text-xl tracking-tight text-foreground"
                 whileHover={{ scale: 1.02 }}
               >
-                {orgInfo.name.split(' ')[0]}<span className="text-accent">{orgInfo.name.split(' ').slice(1).join('') || 'Voice'}</span>
+                <span className="hidden sm:inline">Lincoln Student Union <span className="text-accent">Voice</span></span>
+                <span className="inline sm:hidden">LSU <span className="text-accent">Voice</span></span>
               </motion.span>
-              <span className="text-xs text-muted-foreground">{orgInfo.description.split('.')[0]}</span>
+              <span className="text-xs text-muted-foreground hidden sm:inline">{orgInfo.description.split('.')[0]}</span>
             </div>
           </Link>
           <nav className="flex items-center gap-3 md:gap-6">
@@ -615,10 +616,10 @@ export default function HomePage() {
               <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
                 <GraduationCap className="h-5 w-5 text-primary-foreground" />
               </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-white whitespace-nowrap">LincolnVoice</span>
-                <div className="flex gap-8">
-                  <p className="text-xs text-gray-400 leading-tight">Lincoln Campus Abuja, Nigeria, Along Jikwoyi-Karshi Road Azahata, Kuduru, Abuja, Nigeria</p>
+              <div className="flex flex-col w-full">
+                <span className="font-semibold text-white">Lincoln Student Union Voice</span>
+                <div className="flex flex-col md:flex-row gap-6 md:gap-8 mt-2 w-full">
+                  <p className="text-xs text-gray-400 leading-relaxed max-w-md">Lincoln Campus Abuja, Nigeria, Along Jikwoyi-Karshi Road Azahata, Kuduru, Abuja, Nigeria</p>
 
 
                   <p className="text-sm text-gray-400 md:text-center md:px-6 flex-1 md:self-center">
