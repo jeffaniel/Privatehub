@@ -384,7 +384,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="inline-block text-accent text-sm font-medium tracking-wider uppercase mb-4"
             >
-              Why Choose Us
+              Where Silence Finds a Voice
             </motion.span>
             <h2
               className="text-3xl md:text-4xl font-bold text-foreground mb-4"
