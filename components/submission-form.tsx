@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -31,6 +31,15 @@ export function SubmissionForm() {
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState("")
   const [currentStep, setCurrentStep] = useState(1)
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isMountedRef = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current)
+    }
+  }, [])
 
   const [formData, setFormData] = useState({
     category: "",
@@ -128,7 +137,10 @@ export function SubmissionForm() {
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(trackingCode)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current)
+    copiedTimerRef.current = setTimeout(() => {
+      if (isMountedRef.current) setCopied(false)
+    }, 2000)
   }
 
   if (submitted) {
@@ -167,10 +179,16 @@ export function SubmissionForm() {
             >
               <p className="text-sm text-muted-foreground mb-3">Your Tracking Code</p>
               <div className="flex items-center justify-center gap-3">
-                <code className="text-2xl md:text-3xl font-mono font-bold text-foreground tracking-wider">
+                <code className="text-2xl md:text-3xl font-mono font-bold text-foreground tracking-wider break-all">
                   {trackingCode}
                 </code>
-                <Button variant="ghost" size="icon" onClick={copyToClipboard} className="shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={copyToClipboard}
+                  className="shrink-0"
+                  aria-label="Copy tracking code to clipboard"
+                >
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>

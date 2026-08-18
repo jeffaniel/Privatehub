@@ -64,43 +64,45 @@ export default function SubmissionPage() {
   const [voting, setVoting] = useState(false)
 
   useEffect(() => {
-    fetchSubmission()
-    fetchComments()
+    let isMounted = true
+
+    const fetchAll = async () => {
+      try {
+        // Fetch submission first
+        const { data, error } = await supabase
+          .from("submissions")
+          .select("*")
+          .eq("tracking_code", trackingCode)
+          .single()
+
+        if (!isMounted) return
+        if (error) throw error
+        setSubmission(data)
+
+        // Only fetch comments once we have the submission id
+        if (data?.id) {
+          const { data: commentsData, error: commentsError } = await supabase
+            .from("comments")
+            .select("*")
+            .eq("submission_id", data.id)
+            .order("created_at", { ascending: false })
+
+          if (!isMounted) return
+          if (!commentsError) setComments(commentsData || [])
+        }
+      } catch (error) {
+        console.error("Error fetching submission:", error)
+      } finally {
+        if (isMounted) setLoading(false)
+      }
+    }
+
+    fetchAll()
+    return () => { isMounted = false }
   }, [trackingCode])
 
-  const fetchSubmission = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("submissions")
-        .select("*")
-        .eq("tracking_code", trackingCode)
-        .single()
-
-      if (error) throw error
-      setSubmission(data)
-    } catch (error) {
-      console.error("Error fetching submission:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const fetchComments = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("submission_id", submission?.id)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      setComments(data || [])
-    } catch (error) {
-      console.error("Error fetching comments:", error)
-    }
-  }
-
   const handleVote = async (type: 'up' | 'down') => {
+
     if (!submission || voting) return
 
     setVoting(true)
@@ -154,8 +156,13 @@ export default function SubmissionPage() {
         comments_count: (prev.comments_count || 0) + 1
       } : null)
 
-      // Refresh comments list
-      fetchComments()
+      // Refresh comments list using the known submission id
+      const { data: refreshed } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("submission_id", submission.id)
+        .order("created_at", { ascending: false })
+      if (refreshed) setComments(refreshed)
     } catch (error) {
       console.error("Error adding comment:", error)
     } finally {

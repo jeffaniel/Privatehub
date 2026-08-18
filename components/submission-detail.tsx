@@ -120,6 +120,17 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
     fetchData()
   }, [submissionId])
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent mx-auto" />
+          <p className="text-sm text-muted-foreground">Loading submission...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!submission) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -136,6 +147,7 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
       </div>
     )
   }
+
 
   const handleSendResponse = async () => {
     if (!responseText.trim()) return

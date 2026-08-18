@@ -166,9 +166,12 @@
     @apply outline-2 outline-offset-2 outline-accent;
   }
   
-  /* Minimum touch target sizes for mobile */
-  button, a {
-    @apply min-h-[44px];
+  /* Minimum touch target sizes for mobile — scoped to interactive controls only */
+  button:not([role="none"]):not([data-decorative]) {
+    min-height: 44px;
+  }
+  a[role="button"] {
+    min-height: 44px;
   }
 }
 
@@ -253,3 +256,24 @@
 .loyola-banner {
   background-color: oklch(0.55 0.22 27 / 0.85);
 }
+
+/* Respect prefers-reduced-motion for users who prefer less animation */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animated-gradient {
+    animation: none;
+  }
+
+  .shimmer::after {
+    animation: none;
+  }
+}
+

@@ -34,6 +34,9 @@ export default function HomePage() {
   const [particles, setParticles] = useState<any[]>([])
 
   useEffect(() => {
+    // Track mounted state to prevent state updates after unmount
+    let isMounted = true
+
     // Generate particles only on the client to avoid hydration mismatch
     const newParticles = [...Array(20)].map(() => ({
       width: Math.random() * 6 + 2,
@@ -44,37 +47,33 @@ export default function HomePage() {
       delay: Math.random() * 5,
       moveX: Math.random() * 50 - 25,
     }))
-    setParticles(newParticles)
+    if (isMounted) setParticles(newParticles)
 
     async function fetchData() {
       try {
-        setIsLoading(true)
+        if (isMounted) setIsLoading(true)
 
-        // Fetch Org Info
-        const { data: orgData } = await supabase
-          .from('organization_settings')
-          .select('name, description')
-          .limit(1)
-          .maybeSingle()
+        // Fetch Org Info and Stats in parallel for better performance
+        const [orgResult, submissionsResult, trendingResult] = await Promise.all([
+          supabase.from('organization_settings').select('name, description').limit(1).maybeSingle(),
+          supabase.from("submissions").select("status"),
+          supabase.from("submissions").select("*").order("upvotes", { ascending: false }).limit(3)
+        ])
 
-        if (orgData) {
+        if (!isMounted) return
+
+        if (orgResult.data) {
           setOrgInfo({
-            name: orgData.name,
-            description: orgData.description
+            name: orgResult.data.name,
+            description: orgResult.data.description
           })
         }
 
-        // Fetch Stats
-        const { data: submissions } = await supabase
-          .from("submissions")
-          .select("status, upvotes, downvotes")
-
-        if (submissions) {
+        if (submissionsResult.data) {
+          const submissions = submissionsResult.data
           const total = submissions.length
           const responded = submissions.filter((s: any) => s.status === 'responded').length
           const underReview = submissions.filter((s: any) => s.status === 'under_review').length
-          const totalVotes = submissions.reduce((acc: number, s: any) => acc + (s.upvotes || 0) + (s.downvotes || 0), 0)
-
           const rate = total > 0 ? Math.round((responded / total) * 100) : 0
 
           setStats({
@@ -85,22 +84,19 @@ export default function HomePage() {
           })
         }
 
-        // Fetch Trending
-        const { data: trending } = await supabase
-          .from("submissions")
-          .select("*")
-          .order("upvotes", { ascending: false })
-          .limit(3)
-
-        if (trending) setTrendingSubmissions(trending)
+        if (trendingResult.data) setTrendingSubmissions(trendingResult.data)
       } catch (error) {
         console.error("Error fetching homepage data:", error)
       } finally {
-        setIsLoading(false)
+        if (isMounted) setIsLoading(false)
       }
     }
 
     fetchData()
+
+    return () => {
+      isMounted = false
+    }
   }, [])
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -180,24 +176,25 @@ export default function HomePage() {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             onLoadedData={() => setIsVideoLoaded(true)}
+            onError={() => setIsVideoLoaded(true)}
+            aria-hidden="true"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
               isVideoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ filter: 'brightness(0.4) contrast(1.1)' }}
           >
             <source src="/videos/vid.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
           </video>
 
           {/* Semi-transparent overlay to ensure text readability */}
           <div className="absolute inset-0 bg-primary/20 backdrop-blur-[1px]"></div>
 
           {/* Existing gradient orbs - they'll appear over the video */}
-          <GradientOrb className="w-[600px] h-[600px] bg-accent/40 -top-32 -left-32" delay={0} />
-          <GradientOrb className="w-[500px] h-[500px] bg-primary-foreground/10 top-1/2 right-0" delay={2} />
-          <GradientOrb className="w-[400px] h-[400px] bg-accent/30 bottom-0 left-1/3" delay={4} />
+          <GradientOrb className="w-[min(600px,90vw)] h-[min(600px,90vw)] bg-accent/40 -top-32 -left-32" delay={0} />
+          <GradientOrb className="w-[min(500px,80vw)] h-[min(500px,80vw)] bg-primary-foreground/10 top-1/2 right-0" delay={2} />
+          <GradientOrb className="w-[min(400px,70vw)] h-[min(400px,70vw)] bg-accent/30 bottom-0 left-1/3" delay={4} />
         </div>
 
         {/* Rest of your existing code remains exactly the same... */}
