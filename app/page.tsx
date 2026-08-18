@@ -22,10 +22,10 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [stats, setStats] = useState({
-    total: 2847, // Fallbacks
-    rate: 94,
-    resolved: 156,
-    active: 42
+    total: 0,
+    rate: 0,
+    resolved: 0,
+    active: 0
   })
   const [orgInfo, setOrgInfo] = useState({
     name: "Lincoln Student Union Voice",
@@ -78,10 +78,10 @@ export default function HomePage() {
           const rate = total > 0 ? Math.round((responded / total) * 100) : 0
 
           setStats({
-            total: total > 0 ? total : 2847,
-            rate: rate > 0 ? rate : 94,
-            resolved: responded > 0 ? responded : 156,
-            active: underReview > 0 ? underReview : 42
+            total,
+            rate,
+            resolved: responded,
+            active: underReview
           })
         }
 
