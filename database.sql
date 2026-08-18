@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS submissions (
   category TEXT NOT NULL CHECK (category IN ('suggestion', 'voiceout')),
   subject TEXT NOT NULL,
   message TEXT NOT NULL,
-  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'under_review', 'implemented', 'closed')),
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'under_review', 'responded', 'closed')),
   upvotes INTEGER DEFAULT 0,
   downvotes INTEGER DEFAULT 0,
   comments_count INTEGER DEFAULT 0,
@@ -430,7 +430,7 @@ DROP POLICY IF EXISTS "Allow public read access to active submissions" ON submis
 CREATE POLICY "Allow public read access to active submissions" 
   ON submissions FOR SELECT 
   TO public 
-  USING (status IN ('pending', 'under_review', 'implemented'));
+  USING (status IN ('pending', 'under_review', 'responded'));
 
 DROP POLICY IF EXISTS "Admins can view all submissions" ON submissions;
 CREATE POLICY "Admins can view all submissions"
@@ -459,7 +459,7 @@ CREATE POLICY "Allow public read access to comments"
   USING (EXISTS (
     SELECT 1 FROM submissions 
     WHERE submissions.id = comments.submission_id 
-    AND submissions.status IN ('pending', 'under_review', 'implemented')
+    AND submissions.status IN ('pending', 'under_review', 'responded')
   ));
 
 DROP POLICY IF EXISTS "Admins can view/manage comments" ON comments;
@@ -483,7 +483,7 @@ CREATE POLICY "Allow public read access to votes"
   USING (EXISTS (
     SELECT 1 FROM submissions s
     WHERE s.id = votes.submission_id
-    AND s.status IN ('pending', 'under_review', 'implemented')
+    AND s.status IN ('pending', 'under_review', 'responded')
   ));
 
 DROP POLICY IF EXISTS "Allow public insert to votes" ON votes;

@@ -58,12 +58,8 @@ interface Submission {
 
 
 const CATEGORY_LABELS: Record<string, string> = {
-  feedback: "Feedback",
-  complaint: "Complaint",
   suggestion: "Suggestion",
-  report: "Report",
-  praise: "Praise",
-  other: "Other",
+  voiceout: "Voice Out",
 }
 
 
@@ -95,6 +91,13 @@ const STATUS_CONFIG: Record<
     bgColor: "bg-muted/10",
     icon: <Shield className="h-4 w-4" />,
   },
+}
+
+const DEFAULT_STATUS = {
+  label: "Unknown",
+  color: "text-muted-foreground",
+  bgColor: "bg-muted/10",
+  icon: <AlertTriangle className="h-4 w-4" />,
 }
 
 
@@ -612,7 +615,7 @@ function StatCard({
 }
 
 function SubmissionRow({ submission, index }: { submission: Submission; index: number }) {
-  const status = STATUS_CONFIG[submission.status]
+  const status = STATUS_CONFIG[submission.status] ?? DEFAULT_STATUS
 
   return (
     <motion.div

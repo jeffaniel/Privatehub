@@ -135,10 +135,10 @@ export function OrganizationSettings() {
 
       const statsData: StatsData = {
         total_submissions: submissions?.length || 0,
-        pending_submissions: submissions?.filter(s => s.status === 'pending').length || 0,
-        under_review_submissions: submissions?.filter(s => s.status === 'under_review').length || 0,
-        responded_submissions: submissions?.filter(s => s.status === 'responded').length || 0,
-        closed_submissions: submissions?.filter(s => s.status === 'closed').length || 0,
+        pending_submissions: submissions?.filter((s: any) => s.status === 'pending').length || 0,
+        under_review_submissions: submissions?.filter((s: any) => s.status === 'under_review').length || 0,
+        responded_submissions: submissions?.filter((s: any) => s.status === 'responded').length || 0,
+        closed_submissions: submissions?.filter((s: any) => s.status === 'closed').length || 0,
         total_comments: comments?.length || 0,
       }
 

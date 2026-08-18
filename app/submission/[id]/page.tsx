@@ -23,6 +23,7 @@ import {
   ThumbsUp,
   ThumbsDown,
   User,
+  Shield,
   CalendarDays,
   Tag,
   Send,
@@ -164,12 +165,14 @@ export default function SubmissionPage() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'open':
+      case 'pending':
         return <Clock className="h-4 w-4" />
       case 'under_review':
         return <Eye className="h-4 w-4" />
-      case 'implemented':
+      case 'responded':
         return <CheckCircle className="h-4 w-4" />
+      case 'closed':
+        return <Shield className="h-4 w-4" />
       default:
         return <Clock className="h-4 w-4" />
     }
@@ -177,12 +180,14 @@ export default function SubmissionPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open':
+      case 'pending':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'under_review':
         return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'implemented':
+      case 'responded':
         return 'bg-green-100 text-green-800 border-green-200'
+      case 'closed':
+        return 'bg-gray-100 text-gray-800 border-gray-200'
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200'
     }
@@ -454,9 +459,10 @@ export default function SubmissionPage() {
                         </span>
                       </div>
                       <p className="text-sm">
-                        {submission.status === 'open' && 'Your submission is open for voting and comments.'}
+                        {submission.status === 'pending' && 'Your submission is open for voting and comments.'}
                         {submission.status === 'under_review' && 'Your submission is currently under review by the administration.'}
-                        {submission.status === 'implemented' && 'Your submission has been implemented!'}
+                        {submission.status === 'responded' && 'Your submission has been responded to by the administration.'}
+                        {submission.status === 'closed' && 'Your submission is now closed.'}
                       </p>
                     </div>
                   </CardContent>

@@ -2,8 +2,8 @@
  * Centralized validation and sanitization utilities
  */
 
-export const VALID_CATEGORIES = ["feedback", "complaint", "suggestion", "report", "praise", "other"]
-export const VALID_STATUSES = ["open", "under_review", "implemented"]
+export const VALID_CATEGORIES = ["suggestion", "voiceout"]
+export const VALID_STATUSES = ["pending", "under_review", "responded", "closed"]
 
 /**
  * Strips HTML tags and trims strings

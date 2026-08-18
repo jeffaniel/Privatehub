@@ -187,6 +187,19 @@ export async function adminSignIn(formData: FormData) {
             return { error: error.message }
         }
 
+        // Check if MFA is enabled
+        if (data.user) {
+            const mfaEnabled = await isMfaEnabled(data.user.id)
+            if (mfaEnabled) {
+                return {
+                    require_mfa: true,
+                    userId: data.user.id,
+                    access_token: data.session?.access_token,
+                    refresh_token: data.session?.refresh_token
+                }
+            }
+        }
+
         // Log successful login
         await logLoginAttempt(email, true, ip, userAgent)
 
@@ -244,8 +257,10 @@ export async function verifyMfa(formData: FormData) {
         const userId = formData.get("userId") as string
         const email = formData.get("email") as string
         const code = formData.get("code") as string
+        const access_token = formData.get("access_token") as string
+        const refresh_token = formData.get("refresh_token") as string
 
-        if (!userId || !code) {
+        if (!userId || !code || !access_token || !refresh_token) {
             return { error: "Missing required information" }
         }
 
@@ -275,6 +290,31 @@ export async function verifyMfa(formData: FormData) {
         const now = Date.now().toString()
         cookieStore.set('session_start', now, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' })
         cookieStore.set('last_activity', now, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' })
+
+        // Manually set Supabase auth cookies using createServerClient
+        const supabaseServer = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    getAll() { return cookieStore.getAll() },
+                    setAll(cookiesToSet) {
+                        try {
+                            cookiesToSet.forEach(({ name, value, options }) => {
+                                cookieStore.set(name, value, options)
+                            })
+                        } catch (e) {
+                            // Ignore errors if already in response phase
+                        }
+                    }
+                }
+            }
+        )
+        // Just set the session (should not trigger network request if both tokens provided)
+        await supabaseServer.auth.setSession({
+            access_token,
+            refresh_token
+        })
 
     } catch (err) {
         console.error("Unexpected MFA Error:", err)

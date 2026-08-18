@@ -19,9 +19,41 @@ export async function middleware(request: NextRequest) {
         },
     })
 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+    const isValidUrl = supabaseUrl.startsWith('http://') || supabaseUrl.startsWith('https://')
+
+    if (!isValidUrl || !supabaseAnonKey || supabaseAnonKey.includes('ANON_KEY_HERE')) {
+        return new NextResponse(
+            `<html>
+                <head>
+                    <title>Configuration Required | LincolnVoice</title>
+                </head>
+                <body style="font-family: system-ui, -apple-system, sans-serif; padding: 2rem; max-width: 600px; margin: 4rem auto; background: #0f172a; color: #f1f5f9;">
+                    <div style="border: 1px solid #334155; padding: 2rem; border-radius: 12px; background: #1e293b; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);">
+                        <h2 style="color: #f43f5e; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            ⚠️ Supabase Setup Required
+                        </h2>
+                        <p style="line-height: 1.6; color: #cbd5e1;">It looks like your local <strong>.env</strong> file is not configured yet, or still contains placeholder values.</p>
+                        <p style="line-height: 1.6; color: #cbd5e1;">Please edit the <strong>.env</strong> file in your project root and replace the placeholders with your actual Supabase URL and Anon Key:</p>
+                        <pre style="background: #0f172a; padding: 1rem; border-radius: 6px; color: #38bdf8; overflow-x: auto; font-family: monospace; font-size: 0.9rem; border: 1px solid #1e293b;">NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</pre>
+                        <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6;">
+                            💡 You can find these keys in your Supabase dashboard (which we saw you have open under the tab <strong>"lincolnVoice - Overview"</strong>) under <strong>Settings &rarr; API</strong>.
+                        </p>
+                    </div>
+                </body>
+            </html>`,
+            {
+                status: 500,
+                headers: { 'Content-Type': 'text/html; charset=utf-8' }
+            }
+        )
+    }
+
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        supabaseAnonKey,
         {
             cookies: {
                 get(name: string) {

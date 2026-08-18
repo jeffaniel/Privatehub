@@ -74,12 +74,8 @@ const STATUS_CONFIG: Record<
 
 
 const CATEGORY_LABELS: Record<string, string> = {
-  feedback: "Feedback",
-  complaint: "Complaint",
   suggestion: "Suggestion",
-  report: "Report",
-  praise: "Praise",
-  other: "Other",
+  voiceout: "Voice Out",
 }
 
 import { supabase } from "@/lib/supabase"
@@ -233,8 +229,8 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
                 <div>
                   <CardTitle className="text-xl">{submission.subject}</CardTitle>
                   <CardDescription className="mt-1">
-                    Submitted on {new Date(submission.createdAt).toLocaleDateString()} at{" "}
-                    {new Date(submission.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    Submitted on {new Date(submission.created_at).toLocaleDateString()} at{" "}
+                    {new Date(submission.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
@@ -252,7 +248,7 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
               <div>
                 <Label className="text-xs text-muted-foreground">Tracking Code</Label>
                 <code className="block mt-1 text-sm font-mono bg-muted px-3 py-2 rounded-lg">
-                  {submission.trackingCode}
+                  {submission.tracking_code}
                 </code>
               </div>
               <div>
@@ -322,11 +318,11 @@ export function SubmissionDetail({ submissionId }: { submissionId: string }) {
                     >
                       <p className="text-foreground leading-relaxed">{response.message}</p>
                       <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
-                        <span className="font-medium text-accent">{response.adminName}</span>
+                        <span className="font-medium text-accent">Staff Response</span>
                         <span>•</span>
                         <span>
-                          {new Date(response.createdAt).toLocaleDateString()} at{" "}
-                          {new Date(response.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                          {new Date(response.created_at).toLocaleDateString()} at{" "}
+                          {new Date(response.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
                     </motion.div>

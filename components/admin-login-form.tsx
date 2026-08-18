@@ -23,6 +23,8 @@ export function AdminLoginForm() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [mfaStep, setMfaStep] = useState(false)
   const [mfaUserId, setMfaUserId] = useState("")
+  const [mfaAccessToken, setMfaAccessToken] = useState("")
+  const [mfaRefreshToken, setMfaRefreshToken] = useState("")
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -98,6 +100,8 @@ export function AdminLoginForm() {
         } else if (result?.require_mfa) {
           setMfaStep(true)
           setMfaUserId(result.userId)
+          setMfaAccessToken(result.access_token || "")
+          setMfaRefreshToken(result.refresh_token || "")
           setSuccessMessage("Authenticator code required")
         } else {
           setSuccessMessage("Login successful! Redirecting...")
@@ -129,6 +133,8 @@ export function AdminLoginForm() {
       data.append("userId", mfaUserId)
       data.append("email", formData.email)
       data.append("code", formData.mfaCode)
+      data.append("access_token", mfaAccessToken)
+      data.append("refresh_token", mfaRefreshToken)
 
       const { verifyMfa } = await import("@/lib/actions")
       const result = await verifyMfa(data)

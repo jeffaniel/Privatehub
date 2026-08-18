@@ -20,6 +20,7 @@ import { TrendingCard } from "@/components/home/trending-card"
 export default function HomePage() {
   const [trendingSubmissions, setTrendingSubmissions] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [stats, setStats] = useState({
     total: 2847, // Fallbacks
     rate: 94,
@@ -70,16 +71,16 @@ export default function HomePage() {
 
         if (submissions) {
           const total = submissions.length
-          const implemented = submissions.filter(s => s.status === 'implemented').length
-          const underReview = submissions.filter(s => s.status === 'under_review').length
-          const totalVotes = submissions.reduce((acc, s) => acc + (s.upvotes || 0) + (s.downvotes || 0), 0)
+          const responded = submissions.filter((s: any) => s.status === 'responded').length
+          const underReview = submissions.filter((s: any) => s.status === 'under_review').length
+          const totalVotes = submissions.reduce((acc: number, s: any) => acc + (s.upvotes || 0) + (s.downvotes || 0), 0)
 
-          const rate = total > 0 ? Math.round((implemented / total) * 100) : 0
+          const rate = total > 0 ? Math.round((responded / total) * 100) : 0
 
           setStats({
             total: total > 0 ? total : 2847,
             rate: rate > 0 ? rate : 94,
-            resolved: implemented > 0 ? implemented : 156,
+            resolved: responded > 0 ? responded : 156,
             active: underReview > 0 ? underReview : 42
           })
         }
@@ -179,8 +180,11 @@ export default function HomePage() {
             muted
             loop
             playsInline
-            preload="none"
-            className="absolute inset-0 w-full h-full object-cover"
+            preload="auto"
+            onLoadedData={() => setIsVideoLoaded(true)}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              isVideoLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
             style={{ filter: 'brightness(0.4) contrast(1.1)' }}
           >
             <source src="/videos/vid.mp4" type="video/mp4" />
